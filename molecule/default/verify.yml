@@ -7,12 +7,12 @@
     command_shell: bash
   tasks:
     - name: Set download directory if install only for the user
-      set_fact:
+      ansible.builtin.set_fact:
         k3s_runtime_dir: "{{ ansible_user_dir }}/bin"
       when: not k3s_for_all_users | bool
 
     - name: Set download directory for all users to use
-      set_fact:
+      ansible.builtin.set_fact:
         k3s_runtime_dir: "/usr/local/bin"
       when: k3s_for_all_users | bool
 
@@ -22,13 +22,13 @@
       register: k3s_file
 
     - name: Print stat info
-      debug:
+      ansible.builtin.debug:
         msg: "{{ k3s_file.stat }}"
 
     - name: Assert that k3s exists
-      assert:
+      ansible.builtin.assert:
         that: k3s_file.stat.exists
 
     - name: Assert that k3s is executable
-      assert:
+      ansible.builtin.assert:
         that: k3s_file.stat.executable
